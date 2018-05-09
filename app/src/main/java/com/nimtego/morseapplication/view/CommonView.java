@@ -5,5 +5,5 @@ public interface CommonView {
     void alarm(String message);
     String getText();
     void setText(String text);
-    void setImage(int number, int id);
+    void nextSymbol(byte symbol);
 }

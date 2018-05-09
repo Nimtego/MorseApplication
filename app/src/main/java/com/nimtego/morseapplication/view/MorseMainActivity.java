@@ -13,6 +13,7 @@ import com.nimtego.morseapplication.presenter.Presenter;
 public class MorseMainActivity extends AppCompatActivity implements CommonView{
     private EditText mEditText;
     private Presenter mPresenter;
+    private ImageView[] imageViews;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -21,6 +22,11 @@ public class MorseMainActivity extends AppCompatActivity implements CommonView{
         setContentView(com.nimtego.morseapplication.R.layout.activity_morse_main);
         findViewById(R.id.button_convert).setOnClickListener(mPresenter);
         mEditText = findViewById(R.id.editText);
+        imageViews = new ImageView[4];
+        imageViews[0] = findViewById(R.id.image_0);
+        imageViews[1] = findViewById(R.id.image_1);
+        imageViews[2] = findViewById(R.id.image_2);
+        imageViews[3] = findViewById(R.id.image_3);
     }
 
     @Override
@@ -40,30 +46,28 @@ public class MorseMainActivity extends AppCompatActivity implements CommonView{
 
     @Override
     public void setText(String text) {
-        mEditText.clearComposingText();
         mEditText.setText(text);
     }
 
     @Override
-    public void setImage(int number, int id) {
-        if (number != 7) {
-            switch (number) {
-                case 0:
-                    ((ImageView) findViewById(R.id.image_0)).setImageResource(id);
-                    break;
-                case 1:
-                    ((ImageView) findViewById(R.id.image_1)).setImageResource(id);
-                    break;
-                case 2:
-                    ((ImageView) findViewById(R.id.image_2)).setImageResource(id);
-                    break;
-                case 3:
-                    ((ImageView) findViewById(R.id.image_3)).setImageResource(id);
-                    break;
+    public void nextSymbol(byte symbol) {
+            for (int i = 0; i < imageViews.length - 1; i++) {
+                imageViews[i] = imageViews[i + 1];
             }
-        }
-        else {
-            findViewById(R.id.button_convert).performClick();
+            imageViews[imageViews.length - 1].setImageResource(getImage(symbol));
+    }
+
+    private int getImage(byte b) {
+        switch (b) {
+            case 1:
+                return R.drawable.dot;
+            case 2:
+                return R.drawable.dash;
+            case 3:
+                return R.drawable.space;
+            default:
+                return R.drawable.space;
         }
     }
+
 }
